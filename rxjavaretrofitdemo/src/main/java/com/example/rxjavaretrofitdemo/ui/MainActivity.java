@@ -1,5 +1,6 @@
 package com.example.rxjavaretrofitdemo.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -8,6 +9,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -52,6 +54,17 @@ public class MainActivity extends AppCompatActivity {
                     holder.setImageURI(R.id.contentImageView,subjectBean.getSubject().getImages().getLarge());
                 }
             };
+            adapter.setOnRecyclerViewItemClickListener(new CommonRecyclerAdapter.OnRecyclerViewItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    Toast.makeText(MainActivity.this,"即将跳转到"+list.get(position).getSubject().getTitle()+"介绍界面",Toast.LENGTH_SHORT).show();
+                    Intent intent=new Intent(MainActivity.this,MovieDetailActivity.class);
+                    intent.putExtra("fragTitle",list.get(position).getSubject().getTitle());
+                    intent.putExtra("fragRank",list.get(position).getRank());
+                    intent.putExtra("fraggenres", String.valueOf(list.get(position).getSubject().getGenres()));
+                    startActivity(intent);
+                }
+            });
             mrecycler.setAdapter(adapter);
         }
 
